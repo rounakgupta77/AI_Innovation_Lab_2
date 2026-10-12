@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HR Portal · Fuel Reimbursement</title>
+  <link rel="stylesheet" href="/shared/styles.css">
+</head>
+<body class="hr">
+
+  <!-- Login -->
+  <div id="login-screen" class="login-wrap">
+    <form id="login-form" class="login-card" autocomplete="on">
+      <span class="badge-top">HR Portal</span>
+      <h1>Fuel Reimbursement</h1>
+      <p class="sub">Review and approve employee fuel, repair and maintenance bills.</p>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autofocus>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <button class="btn btn-primary" type="submit">Log in</button>
+      <div id="login-error" class="form-error"></div>
+      <div class="demo">Demo account: <code>hr</code> · password <code>hr123</code></div>
+    </form>
+  </div>
+
+  <!-- App -->
+  <div id="app-screen" class="hidden">
+    <header class="topbar">
+      <div class="logo">Fuel Reimbursement <small>HR Portal</small></div>
+      <div class="spacer"></div>
+      <div class="who"><span id="who-name"></span><small id="who-meta"></small></div>
+      <button id="logout-btn">Log out</button>
+    </header>
+
+    <main>
+      <div class="stats">
+        <div class="stat"><div class="label">Waiting for review</div><div class="value" id="st-pending">0</div></div>
+        <div class="stat"><div class="label">Approved</div><div class="value" id="st-approved">0</div></div>
+        <div class="stat"><div class="label">Rejected</div><div class="value" id="st-rejected">0</div></div>
+        <div class="stat alert"><div class="label">Anomalies pending</div><div class="value" id="st-anomaly">0</div></div>
+      </div>
+
+      <!-- Auto-approve switch -->
+      <section id="auto-card" class="card auto-card">
+        <label class="switch" title="Turn auto-approve on or off">
+          <input type="checkbox" id="auto-toggle">
+          <span class="slider"></span>
+        </label>
+        <div class="auto-text">
+          <strong>Auto-approve bills with no anomaly</strong>
+          <div id="auto-status" class="muted"></div>
+        </div>
+      </section>
+
+      <div id="detection-banner" class="banner info hidden"></div>
+
+      <!-- Pending -->
+      <section class="card">
+        <div class="card-head">
+          <h2>Waiting for review <span id="pending-count" class="count-pill">0</span></h2>
+          <div class="spacer"></div>
+          <label class="toggle"><input type="checkbox" id="only-anomalies"> Only anomalies</label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Bill</th>
+                <th>Type</th>
+                <th>Bill number</th>
+                <th>Bill date</th>
+                <th class="num">Amount</th>
+                <th>Submitted</th>
+                <th class="num">Action</th>
+              </tr>
+            </thead>
+            <tbody id="pending-rows"></tbody>
+          </table>
+        </div>
+        <div id="pending-empty" class="empty hidden"></div>
+      </section>
+
+      <!-- History -->
+      <section class="card history-card">
+        <div class="card-head">
+          <h2>Decision history <span id="history-count" class="count-pill">0</span></h2>
+          <div class="tabs" id="history-tabs">
+            <button data-filter="all" class="active">All</button>
+            <button data-filter="approved">Approved</button>
+            <button data-filter="rejected">Rejected</button>
+          </div>
+          <select id="mode-filter" title="Who decided">
+            <option value="all">Auto + manual</option>
+            <option value="auto">Auto-approved only</option>
+            <option value="manual">Manual only</option>
+          </select>
+          <div class="spacer"></div>
+          <input type="text" id="search" class="search" placeholder="Search employee, bill no...">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Bill</th>
+                <th>Type</th>
+                <th>Bill number</th>
+                <th>Bill date</th>
+                <th class="num">Amount</th>
+                <th>Decision</th>
+                <th>Decided by</th>
+                <th>Decided on</th>
+              </tr>
+            </thead>
+            <tbody id="history-rows"></tbody>
+          </table>
+        </div>
+        <div id="history-empty" class="empty hidden"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/shared/common.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

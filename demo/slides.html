@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fuel Reimbursement System · Demo slides</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { font-family: "Segoe UI", system-ui, Arial, sans-serif; background: #0f1724; color: #1d2433; overflow: hidden; }
+  .slide { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; padding: 4vh 5vw; }
+  .slide.active { display: flex; }
+  .hint { position: fixed; bottom: 14px; right: 18px; color: #6b7486; font-size: 13px; }
+
+  /* Title */
+  .title { background: linear-gradient(135deg, #0b5cad 0%, #08467f 55%, #5b3cc4 100%); color: #fff; flex-direction: column; text-align: center; }
+  .title .icon { font-size: 9vh; line-height: 1; }
+  .title h1 { font-size: 7vh; margin: 2vh 0 1vh; letter-spacing: -.5px; }
+  .title p { font-size: 3vh; margin: 0; opacity: .9; }
+  .title .chips { margin-top: 5vh; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .title .chips span { border: 1px solid rgba(255,255,255,.45); border-radius: 99px; padding: 8px 18px; font-size: 2.1vh; }
+
+  /* Architecture */
+  .arch { background: #f4f6f9; flex-direction: column; }
+  .arch h2 { margin: 0 0 4vh; font-size: 4.4vh; }
+  .grid { display: grid; grid-template-columns: 1fr 70px 1.25fr 70px 1fr; align-items: center; width: 100%; max-width: 1500px; }
+  .col { display: flex; flex-direction: column; gap: 3vh; }
+  .box { background: #fff; border-radius: 14px; box-shadow: 0 2px 10px rgba(16,24,40,.1); padding: 2.4vh 1.6vw; border-top: 6px solid #0b5cad; }
+  .box h3 { margin: 0 0 .8vh; font-size: 2.6vh; }
+  .box .port { font-family: Consolas, monospace; font-size: 1.8vh; color: #6b7486; }
+  .box ul { margin: 1vh 0 0; padding-left: 20px; font-size: 1.9vh; line-height: 1.55; color: #3a4252; }
+  .box.hr { border-top-color: #5b3cc4; }
+  .box.backend { border-top-color: #127a46; }
+  .box.store { border-top-color: #9a5b00; }
+  .box.ai { border-top-color: #b42318; }
+  .inner { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4vh; margin-top: 1.6vh; }
+  .inner div { background: #f4f6f9; border-radius: 10px; padding: 1.4vh 1vw; font-size: 1.8vh; }
+  .inner b { display: block; font-size: 1.9vh; margin-bottom: .4vh; }
+  .arrow { text-align: center; font-size: 4vh; color: #9aa3b2; }
+  .arrow small { display: block; font-size: 1.5vh; }
+  .flow { margin-top: 5vh; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; font-size: 2vh; }
+  .flow span { background: #fff; border-radius: 99px; padding: 8px 16px; box-shadow: 0 1px 4px rgba(16,24,40,.08); }
+  .flow i { font-style: normal; color: #9aa3b2; }
+  .flow .red { background: #fdecea; color: #b42318; font-weight: 600; }
+
+  /* End */
+  .end { background: #0f1724; color: #fff; flex-direction: column; text-align: center; }
+  .end h2 { font-size: 5vh; margin: 0 0 3vh; }
+  .end ul { list-style: none; padding: 0; margin: 0; font-size: 2.6vh; line-height: 1.9; opacity: .9; }
+  .end .next { margin-top: 4vh; font-size: 2.1vh; color: #9aa3b2; }
+</style>
+</head>
+<body>
+
+<!-- 1. Title card -->
+<section class="slide title active">
+  <div class="icon">⛽</div>
+  <h1>Fuel Reimbursement System</h1>
+  <p>Employee and HR portals with automatic bill reading and anomaly detection</p>
+  <div class="chips">
+    <span>Python + Flask</span><span>SQLite</span><span>Tesseract OCR</span><span>scikit-learn</span><span>Runs fully offline</span>
+  </div>
+</section>
+
+<!-- 2. Architecture -->
+<section class="slide arch">
+  <h2>How it works</h2>
+  <div class="grid">
+    <div class="col">
+      <div class="box">
+        <h3>Employee portal</h3>
+        <div class="port">localhost:5001</div>
+        <ul><li>Upload many bills at once</li><li>Check and correct fields</li><li>Send each bill to HR</li><li>See HR's decision</li></ul>
+      </div>
+    </div>
+    <div class="arrow">⇄<small>REST API</small></div>
+    <div class="col">
+      <div class="box backend">
+        <h3>Shared backend</h3>
+        <div class="port">localhost:5000 · Flask</div>
+        <div class="inner">
+          <div><b>Bill reader</b>Tesseract OCR extracts bill number, date and amount</div>
+          <div><b>Anomaly detection</b>Statistical rules + Isolation Forest</div>
+          <div><b>Workflow</b>Send, approve, reject, duplicate check</div>
+          <div><b>Login</b>Separate employee and HR accounts</div>
+        </div>
+      </div>
+      <div class="box store">
+        <h3>Local storage</h3>
+        <ul><li>SQLite database (bills, users, decisions)</li><li>Uploaded bill images and PDFs</li></ul>
+      </div>
+    </div>
+    <div class="arrow">⇄<small>REST API</small></div>
+    <div class="col">
+      <div class="box hr">
+        <h3>HR portal</h3>
+        <div class="port">localhost:5002</div>
+        <ul><li>All sent bills in one table</li><li>View the original bill</li><li>Approve or reject with a reason</li><li>Anomalies shown in red</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="flow">
+    <span>Upload bill</span><i>→</i><span>OCR fills the fields</span><i>→</i><span>Employee sends</span><i>→</i>
+    <span class="red">Anomaly check</span><i>→</i><span>HR approves / rejects</span><i>→</i><span>Status back to employee</span>
+  </div>
+</section>
+
+<!-- 3. Closing -->
+<section class="slide end">
+  <h2>Thanks for watching</h2>
+  <ul>
+    <li>✔ Bills read automatically, fully offline</li>
+    <li>✔ One click to send, one click to approve</li>
+    <li>✔ Unusual amounts flagged for HR</li>
+  </ul>
+  <div class="next">Next: email notifications · monthly reports · mobile upload</div>
+</section>
+
+<div class="hint">← → to change slide · F11 for full screen</div>
+
+<script>
+  const slides = [...document.querySelectorAll(".slide")];
+  let i = 0;
+  const show = (n) => {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle("active", k === i));
+  };
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) show(i + 1);
+    if (["ArrowLeft", "PageUp"].includes(e.key)) show(i - 1);
+  });
+  document.addEventListener("click", () => show(i + 1));
+</script>
+</body>
+</html>

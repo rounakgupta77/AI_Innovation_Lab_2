@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Portal · Fuel Reimbursement</title>
+  <link rel="stylesheet" href="/shared/styles.css">
+</head>
+<body class="employee">
+
+  <!-- Login -->
+  <div id="login-screen" class="login-wrap">
+    <form id="login-form" class="login-card" autocomplete="on">
+      <span class="badge-top">Employee Portal</span>
+      <h1>Fuel Reimbursement</h1>
+      <p class="sub">Upload fuel, repair and maintenance bills and send them to HR.</p>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autofocus>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <button class="btn btn-primary" type="submit">Log in</button>
+      <div id="login-error" class="form-error"></div>
+      <div class="demo">Demo accounts: <code>amit</code>, <code>priya</code>, <code>rahul</code> · password <code>emp123</code></div>
+    </form>
+  </div>
+
+  <!-- App -->
+  <div id="app-screen" class="hidden">
+    <header class="topbar">
+      <div class="logo">Fuel Reimbursement <small>Employee Portal</small></div>
+      <div class="spacer"></div>
+      <div class="who"><span id="who-name"></span><small id="who-meta"></small></div>
+      <button id="logout-btn">Log out</button>
+    </header>
+
+    <main>
+      <div id="reader-banner" class="banner hidden"></div>
+
+      <div class="stats">
+        <div class="stat"><div class="label">Not sent</div><div class="value" id="st-draft">0</div></div>
+        <div class="stat"><div class="label">Pending with HR</div><div class="value" id="st-pending">0</div></div>
+        <div class="stat"><div class="label">Approved</div><div class="value" id="st-approved">0</div></div>
+        <div class="stat"><div class="label">Rejected</div><div class="value" id="st-rejected">0</div></div>
+      </div>
+
+      <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload bills">
+        <div class="icon">⛽</div>
+        <div class="big">Drop bills here or click to choose files</div>
+        <div class="muted">You can select several at once. Photos (JPG, PNG, WEBP...) and PDFs up to 15 MB each.</div>
+        <input id="file-input" type="file" multiple accept="image/*,.pdf,application/pdf" hidden>
+      </div>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>My bills</h2>
+          <div class="tabs" id="tabs">
+            <button data-filter="all" class="active">All</button>
+            <button data-filter="draft">Not sent</button>
+            <button data-filter="pending">Pending</button>
+            <button data-filter="approved">Approved</button>
+            <button data-filter="rejected">Rejected</button>
+          </div>
+          <div class="spacer"></div>
+          <button id="send-all" class="btn btn-primary hidden">Send all ready bills</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Bill</th>
+                <th>Type</th>
+                <th>Bill number</th>
+                <th>Bill date</th>
+                <th class="num">Amount (₹)</th>
+                <th>Status</th>
+                <th class="num">Action</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+        <div id="empty" class="empty hidden">No bills here yet. Upload your first bill above.</div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/shared/common.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
